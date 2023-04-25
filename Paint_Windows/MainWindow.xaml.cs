@@ -36,8 +36,8 @@ namespace paintting
         bool _isDrawing = false;
         IShape? _prototype = null;
         string _selectedType = "";
+        int _selectedSize = 2;
         Color _selectedColor = Colors.Black;
-        int _selectedThickness = 2;
 
         Point _start;
         Point _end;
@@ -106,6 +106,8 @@ namespace paintting
             _prototype = (IShape)
                 _abilities[_selectedType].Clone();
             _prototype.UpdateStart(_start);
+
+            _prototype.UpdateSize(_selectedSize);
         }
 
 
@@ -117,14 +119,14 @@ namespace paintting
 
                 foreach (var shape in _shapes)
                 {
-                    UIElement oldShape = shape.Draw(_selectedColor, _selectedThickness);
+                    UIElement oldShape = shape.Draw();
                     actualCanvas.Children.Add(oldShape);
                 }
 
                 _end = e.GetPosition(actualCanvas);
                 _prototype.UpdateEnd(_end);
 
-                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness);
+                UIElement newShape = _prototype.Draw();
                 actualCanvas.Children.Add(newShape);
             }
         }
@@ -143,6 +145,24 @@ namespace paintting
         private void OpenFile_BackstageTabItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void Stroke_Big_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedSize = 20;
+            DropdownSizeBtn.Icon = "./img/stroke_big.png";
+        }
+
+        private void Stroke_Medium_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedSize = 10;
+            DropdownSizeBtn.Icon = "./img/stroke_medium.png";
+        }
+
+        private void Stroke_Light_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedSize = 2;
+            DropdownSizeBtn.Icon = "./img/stroke_light.png";
         }
     }
 }

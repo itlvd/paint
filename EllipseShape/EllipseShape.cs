@@ -16,6 +16,9 @@ namespace EclipseShape
 
         public string Icon => "./img/circle.png";
 
+        public int Size { get; set; } = 2;
+        public Color Color { get; set; } = Colors.Black;
+
         public void UpdateStart(Point p)
         {
             Start = p;
@@ -25,7 +28,17 @@ namespace EclipseShape
             End = p;
         }
 
-        public UIElement Draw(Color color, int thickness)
+        public void UpdateSize(int size)
+        {
+            Size = size;
+        }
+
+        public void UpdateColor(Color color)
+        {
+            Color = color;
+        }
+
+        public UIElement Draw()
         {
             double width = Math.Abs(End.X - Start.X);
             double height = Math.Abs(End.Y - Start.Y);
@@ -34,8 +47,8 @@ namespace EclipseShape
             {
                 Width = width,
                 Height = height,
-                Stroke = new SolidColorBrush(color),
-                StrokeThickness = thickness
+                Stroke = new SolidColorBrush(Color),
+                StrokeThickness = Size
             };
 
             Canvas.SetLeft(shape, Start.X);

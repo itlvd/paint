@@ -14,6 +14,9 @@ namespace RectangleShape
 
         public string Name => "Rectangle";
         public string Icon => "./img/rectangular.png";
+        public int Size { get; set; } = 2;
+        
+        public Color Color { get; set; } = Colors.Black;
 
         public void UpdateStart(Point p)
         {
@@ -24,7 +27,17 @@ namespace RectangleShape
             End = p;
         }
 
-        public UIElement Draw(Color color, int thickness)
+        public void UpdateSize(int size)
+        {
+            Size = size;
+        }
+
+        public void UpdateColor(Color color)
+        {
+            Color = color;
+        }
+
+        public UIElement Draw()
         {
             if (End.X - Start.X < 0)
             {
@@ -41,8 +54,8 @@ namespace RectangleShape
             {
                 Width = width,
                 Height = height,
-                Stroke = new SolidColorBrush(color),
-                StrokeThickness = thickness
+                Stroke = new SolidColorBrush(Color),
+                StrokeThickness = Size
             };
 
             Canvas.SetLeft(shape, Start.X);

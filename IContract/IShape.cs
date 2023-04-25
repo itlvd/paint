@@ -1,5 +1,6 @@
 using System;
 using System.Windows;
+using System.Windows.Media;
 
 namespace IContract
 {
@@ -7,8 +8,12 @@ namespace IContract
     {
         string Name { get; }
         string Icon {  get; }
+        int Size { get; set; }
+        Color Color { get; set; }
         void UpdateStart(System.Windows.Point p);
         void UpdateEnd(System.Windows.Point p);
-        UIElement Draw(System.Windows.Media.Color color, int thickness);
+        void UpdateSize(int size);
+        void UpdateColor(Color color);
+        UIElement Draw();
     }
 }

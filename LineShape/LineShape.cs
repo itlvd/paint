@@ -13,6 +13,8 @@ namespace LineShape
 
         public string Name => "Line";
         public string Icon => "./img/line.png";
+        public int Size { get; set; } = 2;
+        public Color Color { get; set; } = Colors.Black;
 
         public void UpdateStart(Point p)
         {
@@ -23,7 +25,17 @@ namespace LineShape
             End = p;
         }
 
-        public UIElement Draw(Color color, int thickness)
+        public void UpdateSize(int size)
+        {
+            Size = size;
+        }
+
+        public void UpdateColor(Color color)
+        {
+            Color = color;
+        }
+
+        public UIElement Draw()
         {
             return new Line()
             {
@@ -31,8 +43,8 @@ namespace LineShape
                 Y1 = Start.Y,
                 X2 = End.X,
                 Y2 = End.Y,
-                Stroke = new SolidColorBrush(color),
-                StrokeThickness = thickness
+                Stroke = new SolidColorBrush(Color),
+                StrokeThickness = Size
             };
         }
 

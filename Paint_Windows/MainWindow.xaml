@@ -120,7 +120,7 @@
 
 
 
-                    <Fluent:DropDownButton Header="Size">
+                    <Fluent:DropDownButton Header="Size" x:Name="DropdownSizeBtn">
 
                         <Fluent:DropDownButton.Icon>
                             <Image Source="./img/stroke_light.png" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -128,7 +128,7 @@
 
                         <StackPanel Width="85">
 
-                            <Fluent:Button>
+                            <Fluent:Button Click="Stroke_Light_Clicked">
                                 <Fluent:Button.LargeIcon>
                                     <Image Source="./img/stroke_light.png"
                                   RenderOptions.BitmapScalingMode="HighQuality">
@@ -136,7 +136,7 @@
                                 </Fluent:Button.LargeIcon>
                             </Fluent:Button>
 
-                            <Fluent:Button>
+                            <Fluent:Button Click="Stroke_Medium_Clicked">
                                 <Fluent:Button.LargeIcon>
                                     <Image Source="./img/stroke_medium.png"
                                   RenderOptions.BitmapScalingMode="HighQuality">
@@ -144,7 +144,7 @@
                                 </Fluent:Button.LargeIcon>
                             </Fluent:Button>
 
-                            <Fluent:Button>
+                            <Fluent:Button Click="Stroke_Big_Clicked">
                                 <Fluent:Button.LargeIcon>
                                     <Image Source="./img/stroke_big.png"
                                   RenderOptions.BitmapScalingMode="HighQuality">
