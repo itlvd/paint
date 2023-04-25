@@ -158,11 +158,37 @@
                     </Fluent:DropDownButton>
 
 
-                    <Fluent:Button Header="Color">
-                        <Fluent:Button.LargeIcon>
+
+
+                    <Fluent:DropDownButton Header="Color" x:Name="DropdownColorBtn">
+
+                        <Fluent:DropDownButton.Icon>
                             <Image Source="./img/color-circle.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
+                        </Fluent:DropDownButton.Icon>
+
+                        <DockPanel Height="50">
+
+                            <Fluent:Button Background="Black" Click="Color_Black_Clicked">
+
+                            </Fluent:Button>
+
+                            <Fluent:Button Background="Red" Click="Color_Red_Clicked">
+                            </Fluent:Button>
+
+                            <Fluent:Button Background="Blue" Click="Color_Blue_Clicked">
+                            </Fluent:Button>
+
+                            <Fluent:Button Background="Green" Click="Color_Green_Clicked">
+                            </Fluent:Button>
+
+                        </DockPanel>
+
+
+                    </Fluent:DropDownButton>
+
+
+
+
                 </Fluent:RibbonGroupBox>
 
             </Fluent:RibbonTabItem>

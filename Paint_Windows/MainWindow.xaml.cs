@@ -108,6 +108,7 @@ namespace paintting
             _prototype.UpdateStart(_start);
 
             _prototype.UpdateSize(_selectedSize);
+            _prototype.UpdateColor(_selectedColor);
         }
 
 
@@ -163,6 +164,33 @@ namespace paintting
         {
             _selectedSize = 2;
             DropdownSizeBtn.Icon = "./img/stroke_light.png";
+        }
+
+        private void Color_Black_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Black;
+            DropdownColorBtn.Background = Brushes.White;
+            DropdownColorBtn.Foreground = Brushes.Black;
+        }
+
+        private void Color_Red_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Red;
+            DropdownColorBtn.Background = Brushes.Red;
+        }
+
+        private void Color_Blue_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Blue;
+            DropdownColorBtn.Background = Brushes.Blue;
+            DropdownColorBtn.Foreground = Brushes.White;
+        }
+
+        private void Color_Green_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Green;
+            DropdownColorBtn.Background = Brushes.Green;
+            DropdownColorBtn.Foreground = Brushes.White;
         }
     }
 }
