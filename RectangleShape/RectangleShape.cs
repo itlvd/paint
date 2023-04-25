@@ -13,6 +13,7 @@ namespace RectangleShape
         public Point End { get; set; }
 
         public string Name => "Rectangle";
+        public string Icon => "./img/rectangular.png";
 
         public void UpdateStart(Point p)
         {

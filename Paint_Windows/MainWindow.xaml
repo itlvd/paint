@@ -9,7 +9,12 @@
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
 
 
-    <DockPanel>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
         <Fluent:Ribbon Name="ribbon" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
@@ -55,10 +60,54 @@
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
 
-                    <Fluent:Button Header="Stroke">
-                        <!--ICON HERE-->
-                    </Fluent:Button>
+                    
+
+
+
+                    <Fluent:DropDownButton Header="Stroke">
+
+                        <Fluent:DropDownButton.Icon>
+                            <Image Source="./img/stroke_light.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:DropDownButton.Icon>
+
+                        <StackPanel Width="85">
+
+                            <Fluent:Button>
+                                <Fluent:Button.LargeIcon>
+                                    <Image Source="./img/stroke_light.png"
+                                  RenderOptions.BitmapScalingMode="HighQuality">
+                                    </Image>
+                                </Fluent:Button.LargeIcon>
+                            </Fluent:Button>
+
+                            <Fluent:Button>
+                                <Fluent:Button.LargeIcon>
+                                    <Image Source="./img/stroke_medium.png"
+                                  RenderOptions.BitmapScalingMode="HighQuality">
+                                    </Image>
+                                </Fluent:Button.LargeIcon>
+                            </Fluent:Button>
+
+                            <Fluent:Button>
+                                <Fluent:Button.LargeIcon>
+                                    <Image Source="./img/stroke_big.png"
+                                  RenderOptions.BitmapScalingMode="HighQuality">
+                                    </Image>
+                                </Fluent:Button.LargeIcon>
+                            </Fluent:Button>
+
+                        </StackPanel>
+                        
+                        
+                    </Fluent:DropDownButton>
+
+
+
+
                 </Fluent:RibbonGroupBox>
+
+
+                
 
                 <Fluent:RibbonGroupBox Header="Shape" Name="Shape_Plugin">
                     <StackPanel Orientation="Horizontal" Name="abilitiesStackPanel">
@@ -68,9 +117,47 @@
 
 
                 <Fluent:RibbonGroupBox Header="Size and Color">
-                    <Fluent:Button Header="Size">
-                        <!--ICON HERE-->
-                    </Fluent:Button>
+
+
+
+                    <Fluent:DropDownButton Header="Size">
+
+                        <Fluent:DropDownButton.Icon>
+                            <Image Source="./img/stroke_light.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:DropDownButton.Icon>
+
+                        <StackPanel Width="85">
+
+                            <Fluent:Button>
+                                <Fluent:Button.LargeIcon>
+                                    <Image Source="./img/stroke_light.png"
+                                  RenderOptions.BitmapScalingMode="HighQuality">
+                                    </Image>
+                                </Fluent:Button.LargeIcon>
+                            </Fluent:Button>
+
+                            <Fluent:Button>
+                                <Fluent:Button.LargeIcon>
+                                    <Image Source="./img/stroke_medium.png"
+                                  RenderOptions.BitmapScalingMode="HighQuality">
+                                    </Image>
+                                </Fluent:Button.LargeIcon>
+                            </Fluent:Button>
+
+                            <Fluent:Button>
+                                <Fluent:Button.LargeIcon>
+                                    <Image Source="./img/stroke_big.png"
+                                  RenderOptions.BitmapScalingMode="HighQuality">
+                                    </Image>
+                                </Fluent:Button.LargeIcon>
+                            </Fluent:Button>
+
+                        </StackPanel>
+
+
+                    </Fluent:DropDownButton>
+
+
                     <Fluent:Button Header="Color">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/color-circle.png" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -87,7 +174,7 @@
         </Canvas>
         <Canvas DockPanel.Dock="Bottom" Grid.Row="1" Background="Transparent"  Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
         </Canvas>
-    </DockPanel>
+    </Grid>
 
 
 

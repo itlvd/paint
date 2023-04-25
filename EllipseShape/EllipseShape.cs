@@ -14,6 +14,8 @@ namespace EclipseShape
 
         public string Name => "Ellipse";
 
+        public string Icon => "./img/circle.png";
+
         public void UpdateStart(Point p)
         {
             Start = p;

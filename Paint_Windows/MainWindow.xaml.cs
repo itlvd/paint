@@ -72,13 +72,14 @@ namespace paintting
 
             foreach (var ability in _abilities)
             {
-                var button = new System.Windows.Controls.Button()
+                var button = new Fluent.Button()
                 {
-                    Width = 80,
-                    Height = 35,
+                    SizeDefinition = "Large",
                     Content = ability.Value.Name,
-                    Tag = ability.Value.Name
+                    Tag = ability.Value.Name,
+                    Icon = ability.Value.Icon,
                 };
+                
                 button.Click += ability_Click;
                 abilitiesStackPanel.Children.Add(button);
             }
@@ -97,6 +98,10 @@ namespace paintting
             _isDrawing = true;
             _start = e.GetPosition(actualCanvas);
 
+            if(_selectedType == "")
+            {
+                _selectedType = "Line";
+            }
 
             _prototype = (IShape)
                 _abilities[_selectedType].Clone();
@@ -129,8 +134,10 @@ namespace paintting
             _shapes.Add((IShape)_prototype.Clone());
 
             _isDrawing = false;
+            _start = new Point(0.0,0.0);
+            _end = new Point(0.0, 0.0);
 
-            Title = "Up";
+            //Title = "Up";
         }
 
         private void OpenFile_BackstageTabItem_MouseDown(object sender, MouseButtonEventArgs e)

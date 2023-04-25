@@ -8,6 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="circle.png" />
+    <None Remove="img\brush.png" />
+    <None Remove="img\color-circle.png" />
+    <None Remove="img\eraser.png" />
+    <None Remove="img\fill.png" />
+    <None Remove="img\folder.png" />
+    <None Remove="img\image.png" />
+    <None Remove="img\line.png" />
+    <None Remove="img\pencil.png" />
+    <None Remove="img\rectangular.png" />
+    <None Remove="img\stroke_big.png" />
+    <None Remove="img\stroke_light.png" />
+    <None Remove="img\stroke_medium.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Fluent.Ribbon" Version="9.0.4" />
   </ItemGroup>
 
@@ -16,27 +32,45 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="img\brush.png">
+    <Resource Include="img\circle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="img\color-circle.png">
+    </Resource>
+    <Resource Include="img\brush.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="img\eraser.png">
+    </Resource>
+    <Resource Include="img\color-circle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="img\fill.png">
+    </Resource>
+    <Resource Include="img\eraser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="img\folder.png">
+    </Resource>
+    <Resource Include="img\fill.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="img\image.png">
+    </Resource>
+    <Resource Include="img\folder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="img\pencil.png">
+    </Resource>
+    <Resource Include="img\image.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Resource>
+    <Resource Include="img\line.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\pencil.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\rectangular.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\stroke_light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\stroke_big.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\stroke_medium.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

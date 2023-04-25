@@ -10,4 +10,10 @@
     <ProjectReference Include="..\IContract\IContract.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="circle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
 </Project>

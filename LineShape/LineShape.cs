@@ -12,6 +12,7 @@ namespace LineShape
         public Point End { get; set; }
 
         public string Name => "Line";
+        public string Icon => "./img/line.png";
 
         public void UpdateStart(Point p)
         {
