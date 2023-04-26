@@ -49,11 +49,11 @@
                             <Image Source="./img/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Eraser">
-                        <Fluent:Button.LargeIcon>
+                    <Fluent:ToggleButton Header="Eraser" Click="Is_Eraser_Btn">
+                        <Fluent:ToggleButton.LargeIcon>
                             <Image Source="./img/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
+                        </Fluent:ToggleButton.LargeIcon>
+                    </Fluent:ToggleButton>
                     <Fluent:Button Header="Fill">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/fill.png" RenderOptions.BitmapScalingMode="HighQuality"/>
