@@ -37,6 +37,7 @@ namespace paintting
         bool _isDrawing = false;
         bool _isEraser = false;
         bool _isFillColor = false;
+        bool _isPressMouse = false; // Nếu không có biến này thì chỉ cần chấm 2 điểm là nó vẽ, bắt buộc phải kéo xong thả chuột thì mới được phép vẽ.
 
         IShape? _prototype = null;
         string _selectedType = "";
@@ -101,6 +102,7 @@ namespace paintting
         {
 
             _isDrawing = true;
+            
             _start = new Point(0.0, 0.0);
             _end = new Point(0.0, 0.0);
 
@@ -146,6 +148,8 @@ namespace paintting
         {
             if (_isDrawing)
             {
+                _isPressMouse = true;
+
                 actualCanvas.Children.Clear();
 
                 _end = e.GetPosition(actualCanvas);
@@ -185,13 +189,14 @@ namespace paintting
                 return;
             }
 
-            if (!_isEraser)
+            if (!_isEraser && _isDrawing && _isPressMouse)
             {
                 _shapes.Add((IShape)_prototype.Clone());
             }
             
 
             _isDrawing = false;
+            _isPressMouse = false;
             _start = new Point(0.0,0.0);
             _end = new Point(0.0, 0.0);
 
