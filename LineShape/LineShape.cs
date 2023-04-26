@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Windows.Media;
+using Color = System.Drawing.Color;
 using System.Windows.Shapes;
 using System.Windows;
 using IContract;
+using System.Windows.Media;
 
 namespace LineShape
 {
+    [Serializable]
     public class LineShape : IShape
     {
         public Point Start { get; set; }
@@ -14,9 +16,9 @@ namespace LineShape
         public string Name => "Line";
         public string Icon => "./img/line.png";
         public int Size { get; set; } = 2;
-        public Color Color { get; set; } = Colors.Black;
+        public Color Color { get; set; } = Color.Black;
         public string StrokeStyle { get; set; } = "1 0";
-        public Color FillColor { get; set; } = Colors.White;
+        public Color FillColor { get; set; } = Color.White;
 
         public void UpdateStart(Point p)
         {
@@ -47,7 +49,7 @@ namespace LineShape
                 Y1 = Start.Y,
                 X2 = End.X,
                 Y2 = End.Y,
-                Stroke = new SolidColorBrush(Color),
+                Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Color.A, Color.R, Color.G, Color.B)),
                 StrokeThickness = Size,
                 StrokeDashArray = new DoubleCollection(_StrokeDashArray)
             };

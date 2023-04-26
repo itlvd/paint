@@ -6,8 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:paintting"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-
+        Title="Project Paint" Height="450" Width="800" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+    
 
     <Grid>
 
@@ -18,7 +18,7 @@
 
         <Fluent:Ribbon Name="ribbon" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage Header="File">
+                <Fluent:Backstage Header="File" x:Name="backStage">
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="Open file"
                         MouseDown="OpenFile_BackstageTabItem_MouseDown">
@@ -30,13 +30,13 @@
 
 
             <Fluent:RibbonTabItem Header="Main">
-                <Fluent:RibbonGroupBox Header="Import Data">
-                    <Fluent:Button Header="Paint File">
+                <Fluent:RibbonGroupBox Header="Save Data">
+                    <Fluent:Button Header="Paint File" Click="SavePaintFile">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/folder.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Image">
+                    <Fluent:Button Header="Image" Click="SaveFile">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/image.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
@@ -44,24 +44,23 @@
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Tool">
-                    <Fluent:Button Header="Pen">
+                    <Fluent:Button Header="Pen" Click="Is_Pen_Btn">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:ToggleButton Header="Eraser" Click="Is_Eraser_Btn">
-                        <Fluent:ToggleButton.LargeIcon>
+                    <Fluent:Button Header="Eraser" Click="Is_Eraser_Btn">
+                        <Fluent:Button.LargeIcon>
                             <Image Source="./img/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:ToggleButton.LargeIcon>
-                    </Fluent:ToggleButton>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
                     
                     
-                    
-                    <Fluent:ToggleButton Header="Fill" Click="Is_Fill_Btn">
-                        <Fluent:ToggleButton.LargeIcon>
+                    <Fluent:Button Header="Fill" Click="Is_Fill_Btn">
+                        <Fluent:Button.LargeIcon>
                             <Image Source="./img/fill.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:ToggleButton.LargeIcon>
-                    </Fluent:ToggleButton>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
 
 
 
@@ -216,11 +215,13 @@
 
         </Fluent:Ribbon>
 
-
-        <Canvas DockPanel.Dock="Bottom" Grid.Row="1" Background="Transparent" Name="actualCanvas">
-        </Canvas>
+        <Border DockPanel.Dock="Bottom" Grid.Row="1" >
+            <Canvas Background="Transparent" Name="actualCanvas">
+            </Canvas>
+        </Border >
         <Canvas DockPanel.Dock="Bottom" Grid.Row="1" Background="Transparent"  Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
         </Canvas>
+
     </Grid>
 
 
