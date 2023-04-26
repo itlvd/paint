@@ -16,6 +16,7 @@ namespace LineShape
         public int Size { get; set; } = 2;
         public Color Color { get; set; } = Colors.Black;
         public string StrokeStyle { get; set; } = "1 0";
+        public Color FillColor { get; set; } = Colors.White;
 
         public void UpdateStart(Point p)
         {

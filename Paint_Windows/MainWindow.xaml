@@ -54,11 +54,14 @@
                             <Image Source="./img/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:ToggleButton.LargeIcon>
                     </Fluent:ToggleButton>
-                    <Fluent:Button Header="Fill">
-                        <Fluent:Button.LargeIcon>
+                    
+                    
+                    
+                    <Fluent:ToggleButton Header="Fill" Click="Is_Fill_Btn">
+                        <Fluent:ToggleButton.LargeIcon>
                             <Image Source="./img/fill.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
+                        </Fluent:ToggleButton.LargeIcon>
+                    </Fluent:ToggleButton>
 
 
 
@@ -174,13 +177,17 @@
 
 
 
-                    <Fluent:DropDownButton Header="Color" x:Name="DropdownColorBtn">
+                    <Fluent:DropDownButton Header="Color" x:Name="DropdownColorBtn" Background="Black" Foreground="White">
 
                         <Fluent:DropDownButton.Icon>
                             <Image Source="./img/color-circle.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:DropDownButton.Icon>
 
                         <DockPanel Height="50">
+
+                            <Fluent:Button Background="White" Click="Color_White_Clicked">
+
+                            </Fluent:Button>
 
                             <Fluent:Button Background="Black" Click="Color_Black_Clicked">
 

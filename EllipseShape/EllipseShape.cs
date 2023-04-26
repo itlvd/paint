@@ -19,6 +19,7 @@ namespace EclipseShape
         public int Size { get; set; } = 2;
         public Color Color { get; set; } = Colors.Black;
         public string StrokeStyle { get; set; } = "1 0";
+        public Color FillColor { get; set; } = Colors.White;
 
         public void UpdateStart(Point p)
         {
@@ -50,7 +51,8 @@ namespace EclipseShape
                 Height = height,
                 Stroke = new SolidColorBrush(Color),
                 StrokeThickness = Size,
-                StrokeDashArray = new DoubleCollection(_StrokeDashArray)
+                StrokeDashArray = new DoubleCollection(_StrokeDashArray),
+                Fill = new SolidColorBrush(FillColor)
             };
 
             Canvas.SetLeft(shape, Start.X);

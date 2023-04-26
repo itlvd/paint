@@ -3,6 +3,7 @@ using IContract;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,6 +36,7 @@ namespace paintting
 
         bool _isDrawing = false;
         bool _isEraser = false;
+        bool _isFillColor = false;
 
         IShape? _prototype = null;
         string _selectedType = "";
@@ -95,15 +97,34 @@ namespace paintting
             _selectedType = name;
         }
 
-
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
+
             _isDrawing = true;
             _start = new Point(0.0, 0.0);
             _end = new Point(0.0, 0.0);
+
+            _start = e.GetPosition(actualCanvas);
+
+            if (_isFillColor)
+            {
+                _isDrawing = false;
+
+                foreach (var shape in _shapes)
+                {
+                    if(shape.isTouch(_start))
+                    {
+                        shape.FillColor = _selectedColor;
+                        UIElement oldShape = shape.Draw();
+                        actualCanvas.Children.Add(oldShape);
+                    }
+
+                }
+
+            }
+
             if (!_isEraser)
             {
-                _start = e.GetPosition(actualCanvas);
 
                 if (_selectedType == "")
                 {
@@ -159,6 +180,11 @@ namespace paintting
 
         private void canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (_isFillColor)
+            {
+                return;
+            }
+
             if (!_isEraser)
             {
                 _shapes.Add((IShape)_prototype.Clone());
@@ -195,11 +221,18 @@ namespace paintting
             DropdownSizeBtn.Icon = "./img/stroke_light.png";
         }
 
+        private void Color_White_Clicked(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.White;
+            DropdownColorBtn.Background = Brushes.White;
+            DropdownColorBtn.Foreground = Brushes.Black;
+        }
+
         private void Color_Black_Clicked(object sender, RoutedEventArgs e)
         {
             _selectedColor = Colors.Black;
-            DropdownColorBtn.Background = Brushes.White;
-            DropdownColorBtn.Foreground = Brushes.Black;
+            DropdownColorBtn.Background = Brushes.Black;
+            DropdownColorBtn.Foreground = Brushes.White;
         }
 
         private void Color_Red_Clicked(object sender, RoutedEventArgs e)
@@ -264,6 +297,11 @@ namespace paintting
                 StrokeDashArray = { 1, 6 },
                 StrokeThickness = 2,
             };
+        }
+
+        private void Is_Fill_Btn(object sender, RoutedEventArgs e)
+        {
+            _isFillColor = _isFillColor == true? false: true;
         }
     }
 }
