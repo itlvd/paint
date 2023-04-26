@@ -55,7 +55,10 @@ namespace EclipseShape
             Canvas.SetTop(shape, Start.Y);
             return shape;
         }
-
+        public bool isTouch(Point p)
+        {
+            return false;
+        }
         public object Clone()
         {
             return MemberwiseClone();

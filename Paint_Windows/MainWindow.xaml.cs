@@ -34,6 +34,8 @@ namespace paintting
             new Dictionary<string, IShape>();
 
         bool _isDrawing = false;
+        bool _isEraser = false;
+
         IShape? _prototype = null;
         string _selectedType = "";
         int _selectedSize = 2;
@@ -96,19 +98,22 @@ namespace paintting
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             _isDrawing = true;
-            _start = e.GetPosition(actualCanvas);
-
-            if(_selectedType == "")
+            if (!_isEraser)
             {
-                _selectedType = "Line";
+                _start = e.GetPosition(actualCanvas);
+
+                if (_selectedType == "")
+                {
+                    _selectedType = "Line";
+                }
+
+                _prototype = (IShape)
+                    _abilities[_selectedType].Clone();
+                _prototype.UpdateStart(_start);
+
+                _prototype.UpdateSize(_selectedSize);
+                _prototype.UpdateColor(_selectedColor);
             }
-
-            _prototype = (IShape)
-                _abilities[_selectedType].Clone();
-            _prototype.UpdateStart(_start);
-
-            _prototype.UpdateSize(_selectedSize);
-            _prototype.UpdateColor(_selectedColor);
         }
 
 
@@ -118,23 +123,43 @@ namespace paintting
             {
                 actualCanvas.Children.Clear();
 
+                _end = e.GetPosition(actualCanvas);
+
                 foreach (var shape in _shapes)
                 {
                     UIElement oldShape = shape.Draw();
                     actualCanvas.Children.Add(oldShape);
                 }
 
-                _end = e.GetPosition(actualCanvas);
-                _prototype.UpdateEnd(_end);
+                
 
-                UIElement newShape = _prototype.Draw();
-                actualCanvas.Children.Add(newShape);
+                if (!_isEraser) // khong xoa thi ve
+                {
+                    _prototype.UpdateEnd(_end);
+
+                    UIElement newShape = _prototype.Draw();
+                    actualCanvas.Children.Add(newShape);
+                }
+                else // dang che do nhan nut xoa
+                {
+                    foreach (var shape in _shapes)
+                    {
+                        if(shape.isTouch(_end)) {
+                            _shapes.Remove(shape);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
         private void canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            _shapes.Add((IShape)_prototype.Clone());
+            if (!_isEraser)
+            {
+                _shapes.Add((IShape)_prototype.Clone());
+            }
+            
 
             _isDrawing = false;
             _start = new Point(0.0,0.0);
@@ -191,6 +216,11 @@ namespace paintting
             _selectedColor = Colors.Green;
             DropdownColorBtn.Background = Brushes.Green;
             DropdownColorBtn.Foreground = Brushes.White;
+        }
+
+        private void Is_Eraser_Btn(object sender, RoutedEventArgs e)
+        {
+            _isEraser = _isEraser == false? true: false;
         }
     }
 }

@@ -47,6 +47,16 @@ namespace LineShape
                 StrokeThickness = Size
             };
         }
+        private double _getDistance(Point p1, Point p2)
+        {
+            double distance = Math.Sqrt( (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
+            
+            return distance;
+        }
+        public bool isTouch(Point p)
+        {
+            return _getDistance(Start, End) + 0.01 >= _getDistance(Start, p) + _getDistance(End, p);
+        }
 
         public object Clone()
         {

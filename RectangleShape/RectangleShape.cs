@@ -62,6 +62,10 @@ namespace RectangleShape
             Canvas.SetTop(shape, Start.Y);
             return shape;
         }
+        public bool isTouch(Point p)
+        {
+            return p.X > Start.X && p.X < End.X && p.Y > Start.Y && p.Y < End.Y;
+        }
 
         public object Clone()
         {

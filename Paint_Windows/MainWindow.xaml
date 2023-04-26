@@ -49,7 +49,7 @@
                             <Image Source="./img/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Eraser">
+                    <Fluent:Button Header="Eraser" Click="Is_Eraser_Btn">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>

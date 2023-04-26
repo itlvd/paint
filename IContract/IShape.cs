@@ -14,6 +14,8 @@ namespace IContract
         void UpdateEnd(System.Windows.Point p);
         void UpdateSize(int size);
         void UpdateColor(Color color);
+
+        bool isTouch(System.Windows.Point p);
         UIElement Draw();
     }
 }
