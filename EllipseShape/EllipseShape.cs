@@ -57,7 +57,16 @@ namespace EclipseShape
         }
         public bool isTouch(Point p)
         {
-            return false;
+            double width = Math.Abs(End.X - Start.X);
+            double height = Math.Abs(End.Y - Start.Y);
+
+            double a =  width / 2;
+            double b =  height / 2;
+
+            double h = End.X - a;
+            double k = End.Y - b;
+
+            return ((p.X - h) * (p.X - h)) / (a * a) + ((p.Y - k) * (p.Y - k)) / (b * b) <= 1.0;
         }
         public object Clone()
         {

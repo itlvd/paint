@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows;
@@ -55,7 +55,7 @@ namespace LineShape
         }
         public bool isTouch(Point p)
         {
-            return _getDistance(Start, End) + 0.01 >= _getDistance(Start, p) + _getDistance(End, p);
+            return _getDistance(Start, End) + 0.1 >= _getDistance(Start, p) + _getDistance(End, p); // tăng độ nhạy bằng cách tăng sai số lên.
         }
 
         public object Clone()

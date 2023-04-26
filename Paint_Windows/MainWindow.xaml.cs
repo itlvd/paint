@@ -98,6 +98,8 @@ namespace paintting
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             _isDrawing = true;
+            _start = new Point(0.0, 0.0);
+            _end = new Point(0.0, 0.0);
             if (!_isEraser)
             {
                 _start = e.GetPosition(actualCanvas);
