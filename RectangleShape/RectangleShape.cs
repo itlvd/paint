@@ -39,13 +39,6 @@ namespace RectangleShape
 
         public UIElement Draw()
         {
-            if (End.X - Start.X < 0)
-            {
-                Point x = Start;
-                Start = End;
-                End = x;
-            }
-
             double width = Math.Abs(End.X - Start.X);
             double height = Math.Abs(End.Y - Start.Y);
 
@@ -58,8 +51,26 @@ namespace RectangleShape
                 StrokeThickness = Size
             };
 
-            Canvas.SetLeft(shape, Start.X);
-            Canvas.SetTop(shape, Start.Y);
+            if (End.X - Start.X < 0 && End.Y - Start.Y < 0)
+            {
+                Canvas.SetLeft(shape, End.X);
+                Canvas.SetTop(shape, End.Y);
+            }
+            else if (End.X - Start.X < 0 && End.Y - Start.Y > 0)
+            {
+                Canvas.SetLeft(shape, End.X);
+                Canvas.SetTop(shape, Start.Y);
+            }
+            else if (End.X - Start.X > 0 && End.Y - Start.Y < 0)
+            {
+                Canvas.SetLeft(shape, Start.X);
+                Canvas.SetTop(shape, End.Y);
+            }
+            else
+            {
+                Canvas.SetLeft(shape, Start.X);
+                Canvas.SetTop(shape, Start.Y);
+            }
             return shape;
         }
 
