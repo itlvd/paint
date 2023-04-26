@@ -40,6 +40,7 @@ namespace paintting
         string _selectedType = "";
         int _selectedSize = 2;
         Color _selectedColor = Colors.Black;
+        string _strokeStype = "1 0";
 
         Point _start;
         Point _end;
@@ -115,6 +116,7 @@ namespace paintting
 
                 _prototype.UpdateSize(_selectedSize);
                 _prototype.UpdateColor(_selectedColor);
+                _prototype.StrokeStyle = _strokeStype;
             }
         }
 
@@ -223,6 +225,45 @@ namespace paintting
         private void Is_Eraser_Btn(object sender, RoutedEventArgs e)
         {
             _isEraser = _isEraser == false? true: false;
+        }
+
+        private void Stroke_Style_1_Clicked(object sender, RoutedEventArgs e)
+        {
+            _strokeStype = "1 0";
+            Stroke_Style_Btn.Icon = new Rectangle()
+            {
+                Width = 80,
+                Height = 2,
+                Stroke = Brushes.Black,
+                StrokeDashArray = { 1 , 0},
+                StrokeThickness = 2,
+            };
+        }
+
+        private void Stroke_Style4_1_1_Clicked(object sender, RoutedEventArgs e)
+        {
+            _strokeStype = "4 1 1";
+            Stroke_Style_Btn.Icon = new Rectangle()
+            {
+                Width = 80,
+                Height = 2,
+                Stroke = Brushes.Black,
+                StrokeDashArray = { 4, 1, 1 },
+                StrokeThickness = 2,
+            };
+        }
+
+        private void Stroke_Style_1_6_Clicked(object sender, RoutedEventArgs e)
+        {
+            _strokeStype = "1 6";
+            Stroke_Style_Btn.Icon = new Rectangle()
+            {
+                Width = 80,
+                Height = 2,
+                Stroke = Brushes.Black,
+                StrokeDashArray = { 1, 6 },
+                StrokeThickness = 2,
+            };
         }
     }
 }

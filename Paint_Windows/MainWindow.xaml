@@ -60,39 +60,53 @@
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
 
-                    
 
 
+                    <!-- " https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.shapes.shape.strokedasharray?view=winrt-22621 -->
 
-                    <Fluent:DropDownButton Header="Stroke">
+                    <Fluent:DropDownButton Header="Stroke Style" x:Name="Stroke_Style_Btn">
 
                         <Fluent:DropDownButton.Icon>
-                            <Image Source="./img/stroke_light.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Rectangle
+                                        Width="80"
+                                        Height="2"
+                                        Stroke="Black"
+                                        StrokeDashArray="1 0"
+                                        StrokeThickness="2" />
                         </Fluent:DropDownButton.Icon>
 
                         <StackPanel Width="85">
 
-                            <Fluent:Button>
+                            <Fluent:Button Click="Stroke_Style_1_Clicked">
                                 <Fluent:Button.LargeIcon>
-                                    <Image Source="./img/stroke_light.png"
-                                  RenderOptions.BitmapScalingMode="HighQuality">
-                                    </Image>
+                                    <Rectangle
+                                        Width="80"
+                                        Height="2"
+                                        Stroke="Black"
+                                        StrokeDashArray="1 0"
+                                        StrokeThickness="2" />
                                 </Fluent:Button.LargeIcon>
                             </Fluent:Button>
 
-                            <Fluent:Button>
+                            <Fluent:Button Click="Stroke_Style4_1_1_Clicked">
                                 <Fluent:Button.LargeIcon>
-                                    <Image Source="./img/stroke_medium.png"
-                                  RenderOptions.BitmapScalingMode="HighQuality">
-                                    </Image>
+                                    <Rectangle
+                                        Width="80"
+                                        Height="2"
+                                        Stroke="Black"
+                                        StrokeDashArray="4 1 1"
+                                        StrokeThickness="2" />
                                 </Fluent:Button.LargeIcon>
                             </Fluent:Button>
 
-                            <Fluent:Button>
+                            <Fluent:Button Click="Stroke_Style_1_6_Clicked">
                                 <Fluent:Button.LargeIcon>
-                                    <Image Source="./img/stroke_big.png"
-                                  RenderOptions.BitmapScalingMode="HighQuality">
-                                    </Image>
+                                    <Rectangle
+                                        Width="80"
+                                        Height="2"
+                                        Stroke="Black"
+                                        StrokeDashArray="1 6"
+                                        StrokeThickness="2" />
                                 </Fluent:Button.LargeIcon>
                             </Fluent:Button>
 

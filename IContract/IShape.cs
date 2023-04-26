@@ -10,6 +10,8 @@ namespace IContract
         string Icon {  get; }
         int Size { get; set; }
         Color Color { get; set; }
+
+        string StrokeStyle { get; set; }
         void UpdateStart(System.Windows.Point p);
         void UpdateEnd(System.Windows.Point p);
         void UpdateSize(int size);

@@ -15,6 +15,7 @@ namespace LineShape
         public string Icon => "./img/line.png";
         public int Size { get; set; } = 2;
         public Color Color { get; set; } = Colors.Black;
+        public string StrokeStyle { get; set; } = "1 0";
 
         public void UpdateStart(Point p)
         {
@@ -37,6 +38,8 @@ namespace LineShape
 
         public UIElement Draw()
         {
+            var _StrokeDashArray = Array.ConvertAll(StrokeStyle.Split(" "), Double.Parse);
+
             return new Line()
             {
                 X1 = Start.X,
@@ -44,7 +47,8 @@ namespace LineShape
                 X2 = End.X,
                 Y2 = End.Y,
                 Stroke = new SolidColorBrush(Color),
-                StrokeThickness = Size
+                StrokeThickness = Size,
+                StrokeDashArray = new DoubleCollection(_StrokeDashArray)
             };
         }
         private double _getDistance(Point p1, Point p2)
