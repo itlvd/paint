@@ -4,10 +4,11 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Shapes;
 using IContract;
-using System.Linq;
+using Color = System.Drawing.Color;
 
 namespace RectangleShape
 {
+    [Serializable]
     public class RectangleShape : IShape
     {
         public Point Start { get; set; }
@@ -17,9 +18,9 @@ namespace RectangleShape
         public string Icon => "./img/rectangular.png";
         public int Size { get; set; } = 2;
         
-        public Color Color { get; set; } = Colors.Black;
+        public Color Color { get; set; } = Color.Black;
         public string StrokeStyle { get; set; } = "1 0";
-        public Color FillColor { get; set; } = Colors.White;
+        public Color FillColor { get; set; } = Color.White;
 
         public void UpdateStart(Point p)
         {
@@ -51,10 +52,10 @@ namespace RectangleShape
             {
                 Width = width,
                 Height = height,
-                Stroke = new SolidColorBrush(Color),
+                Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Color.A, Color.R, Color.G, Color.B)),
                 StrokeThickness = Size,
                 StrokeDashArray =  new DoubleCollection(_StrokeDashArray),
-                Fill = new SolidColorBrush(FillColor)
+                Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(FillColor.A, FillColor.R, FillColor.G, FillColor.B))
             };
 
             if (End.X - Start.X < 0 && End.Y - Start.Y < 0)
@@ -81,7 +82,22 @@ namespace RectangleShape
         }
         public bool isTouch(Point p)
         {
-            return p.X > Start.X && p.X < End.X && p.Y > Start.Y && p.Y < End.Y;
+            if (End.X - Start.X < 0 && End.Y - Start.Y < 0)
+            {
+                return p.X <= Start.X && p.X >= End.X && p.Y <= Start.Y && p.Y >= End.Y;
+            }
+            else if (End.X - Start.X < 0 && End.Y - Start.Y > 0)
+            {
+                return p.X <= Start.X && p.X >= End.X && p.Y >= Start.Y && p.Y <= End.Y;
+            }
+            else if (End.X - Start.X > 0 && End.Y - Start.Y < 0)
+            {
+                return p.X >= Start.X && p.X <= End.X && p.Y <= Start.Y && p.Y >= End.Y;
+            }
+            else
+            {
+                return p.X >= Start.X && p.X <= End.X && p.Y >= Start.Y && p.Y <= End.Y;
+            }
         }
 
         public object Clone()

@@ -1,5 +1,6 @@
 ﻿using Fluent;
 using IContract;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -48,10 +50,55 @@ namespace paintting
         Point _start;
         Point _end;
 
-        List<IShape> _shapes = new List<IShape>();
+        ShapesList _shapes = new ShapesList();
+        Stack<IShape> _undoStack = new Stack<IShape>();
+
+        KeyBinding UndoKeyBinding = new KeyBinding(
+            ApplicationCommands.Undo,
+            Key.Z,
+            ModifierKeys.Control);
+        KeyBinding RedoKeyBinding = new KeyBinding(
+           ApplicationCommands.Redo,
+           Key.Y,
+           ModifierKeys.Control);
+        private bool _justErased = false;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            InputBindings.Add(UndoKeyBinding);
+            InputBindings.Add(RedoKeyBinding);
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo,
+               (sender, e) => {
+                   Title = "Project Paint" + " (Undo-ing: Ctrl-Z)";
+                   if (!_justErased)
+                   {
+                       var shape = _shapes[_shapes.Count - 1].Clone();
+                       _shapes.RemoveAt(_shapes.Count - 1); 
+                       _undoStack.Push((IShape)shape);
+                       actualCanvas.Children.RemoveAt(actualCanvas.Children.Count - 1);
+                   }
+                   else
+                   {
+                       var shape = _undoStack.Pop();
+                       _shapes.Add(shape);
+                       actualCanvas.Children.Add(shape.Draw());
+                       _justErased = false;
+                   }
+               },
+               (sender, e) => { 
+                   e.CanExecute = _shapes.Count > 0 && !_isDrawing; 
+               }));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo,
+               (sender, e) => {
+                   Title = "Project Paint" + " (Redo-ing: Ctrl-Y)";
+
+                   var shape = _undoStack.Pop();
+                   _shapes.Add(shape);
+                   actualCanvas.Children.Add(shape.Draw());
+               },
+               (sender, e) => {
+                   e.CanExecute = _undoStack.Count > 0 && !_isDrawing;
+               }));
             // Tự scan chương trình nạp lên các khả năng của mình
             var domain = AppDomain.CurrentDomain;
             var folder = domain.BaseDirectory;
@@ -100,9 +147,12 @@ namespace paintting
 
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
             _isDrawing = true;
-            
+            _undoStack.Clear();
+            _justErased = false;
+
+            Title = "Project Paint";
+
             _start = new Point(0.0, 0.0);
             _end = new Point(0.0, 0.0);
 
@@ -111,23 +161,21 @@ namespace paintting
             if (_isFillColor)
             {
                 _isDrawing = false;
-
+                var newShapes = new ShapesList();
                 foreach (var shape in _shapes)
                 {
                     if(shape.isTouch(_start))
                     {
-                        shape.FillColor = _selectedColor;
-                        UIElement oldShape = shape.Draw();
-                        actualCanvas.Children.Add(oldShape);
+                        IShape newShape = (IShape)shape.Clone();
+                        newShape.FillColor = System.Drawing.Color.FromArgb(_selectedColor.A, _selectedColor.R, _selectedColor.G, _selectedColor.B);
+                        newShapes.Add(newShape);
+                        actualCanvas.Children.Add(newShape.Draw());
                     }
-
                 }
-
+                _shapes.AddRange(newShapes);
             }
-
-            if (!_isEraser)
+            else if (!_isEraser)
             {
-
                 if (_selectedType == "")
                 {
                     _selectedType = "Line";
@@ -138,7 +186,7 @@ namespace paintting
                 _prototype.UpdateStart(_start);
 
                 _prototype.UpdateSize(_selectedSize);
-                _prototype.UpdateColor(_selectedColor);
+                _prototype.UpdateColor(System.Drawing.Color.FromArgb(_selectedColor.A, _selectedColor.R, _selectedColor.G, _selectedColor.B));
                 _prototype.StrokeStyle = _strokeStype;
             }
         }
@@ -171,13 +219,19 @@ namespace paintting
                 }
                 else // dang che do nhan nut xoa
                 {
+                    var newShapes = new ShapesList();
                     foreach (var shape in _shapes)
                     {
                         if(shape.isTouch(_end)) {
-                            _shapes.Remove(shape);
-                            break;
+                            _undoStack.Push(shape);
+                            _justErased = true;
+                        }
+                        else
+                        {
+                            newShapes.Add(shape);
                         }
                     }
+                    _shapes = newShapes;
                 }
             }
         }
@@ -201,11 +255,6 @@ namespace paintting
             _end = new Point(0.0, 0.0);
 
             //Title = "Up";
-        }
-
-        private void OpenFile_BackstageTabItem_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
 
         private void Stroke_Big_Clicked(object sender, RoutedEventArgs e)
@@ -263,6 +312,7 @@ namespace paintting
         private void Is_Eraser_Btn(object sender, RoutedEventArgs e)
         {
             _isEraser = _isEraser == false? true: false;
+            _isFillColor = false;
         }
 
         private void Stroke_Style_1_Clicked(object sender, RoutedEventArgs e)
@@ -307,6 +357,133 @@ namespace paintting
         private void Is_Fill_Btn(object sender, RoutedEventArgs e)
         {
             _isFillColor = _isFillColor == true? false: true;
+            _isEraser = false;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                Title = "Project Paint" + " (Saving: Ctrl-S)"; 
+                SaveDrawing();
+            }
+        }
+        public void SaveFile(object sender, RoutedEventArgs e)
+        {
+            int width = (int)actualCanvas.RenderSize.Width;
+            int height = (int)actualCanvas.RenderSize.Height;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(actualCanvas);
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "IMG files| (*.png)";
+            saveFileDialog.FileName = "Untitled " + DateTime.Now.Ticks + ".png";
+
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                using (var stream = saveFileDialog.OpenFile())
+                {
+                    pngEncoder.Save(stream);
+                    //_shapes.Clear();
+                    //_undoStack.Clear();
+                    //actualCanvas.Children.Clear();
+                    MessageBox.Show("Image saved successfully.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Image saved failed.");
+            }
+        }
+
+        private void SaveDrawing()
+        {
+            SaveFile(null, null);
+        }
+
+        public void SavePaintFile(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "All files (*.bin)|*.bin";
+            saveFileDialog.FileName = "Untitled Shapes - " + DateTime.Now.Ticks + ".bin";
+
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                using (var stream = saveFileDialog.OpenFile())
+                {
+                    _shapes.Save(stream);
+                    //_undoStack.Clear();
+                    //_shapes.Clear();
+                    //actualCanvas.Children.Clear();
+                    MessageBox.Show("Shapes saved successfully.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Image saved failed.");
+            }
+        }
+
+        private void OpenFile_BackstageTabItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "All files (*.bin)|*.bin";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                using (var stream = openFileDialog.OpenFile())
+                {
+                    _shapes.Load(stream);
+                    _undoStack.Clear();
+                    actualCanvas.Children.Clear();
+                    foreach (var shape in _shapes)
+                    {
+                        actualCanvas.Children.Add(shape.Draw());
+                    }
+                    backStage.IsOpen = false;
+                }
+            }
+        }
+
+        private void Is_Pen_Btn(object sender, RoutedEventArgs e)
+        {
+            _isEraser = false;
+            _isFillColor = false;
+        }
+    }
+
+    [Serializable]
+    public class ShapesList : List<IShape>
+    {
+        public void Save(Stream stream)
+        {
+            try
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                bin.Serialize(stream, this);
+            } catch (Exception ex)
+            {
+            }
+        }
+        public void Load(Stream stream)
+        {
+            try
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                var shapes = (ShapesList)bin.Deserialize(stream);
+                this.Clear();
+                this.AddRange(shapes);
+            } catch (Exception ex)
+            {
+            }
+        }
+        public void Draw()
+        {
+            this.ForEach(x => x.Draw());
         }
     }
 }
