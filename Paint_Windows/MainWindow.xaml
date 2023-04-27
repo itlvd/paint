@@ -224,13 +224,6 @@
             </Canvas>
         </ScrollViewer >
         <Canvas DockPanel.Dock="Bottom" Grid.Row="1" Margin="0 0 20 20" Background="Transparent"  Name="aboveCanvas" MouseWheel="aboveCanvas_MouseWheel" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
-
-        <Border DockPanel.Dock="Bottom" Grid.Row="1" >
-            <Canvas Background="Transparent" Name="actualCanvas">
-            </Canvas>
-        </Border >
-        <Canvas DockPanel.Dock="Bottom" Grid.Row="1" Background="Transparent"  Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
-
         </Canvas>
 
     </Grid>
