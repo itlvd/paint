@@ -80,7 +80,7 @@ namespace paintting
                    if (!op)
                    {
                        var shape = _shapes[_shapes.Count - 1].Clone();
-                       _shapes.RemoveAt(_shapes.Count - 1); 
+                       _shapes.RemoveAt(_shapes.Count - 1);
                        _undoStack.Push((IShape)shape);
                        actualCanvas.Children.RemoveAt(actualCanvas.Children.Count - 1);
                        _undoOperation.Push(op);
@@ -93,8 +93,8 @@ namespace paintting
                        _undoOperation.Push(op);
                    }
                },
-               (sender, e) => { 
-                   e.CanExecute = _shapes.Count > 0 && !_isDrawing; 
+               (sender, e) => {
+                   e.CanExecute = _shapes.Count > 0 && !_isDrawing;
                }));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo,
                (sender, e) => {
@@ -153,7 +153,7 @@ namespace paintting
                     Tag = ability.Value.Name,
                     Icon = ability.Value.Icon,
                 };
-                
+
                 button.Click += ability_Click;
                 abilitiesStackPanel.Children.Add(button);
             }
@@ -187,7 +187,7 @@ namespace paintting
                 var newShapes = new ShapesList();
                 foreach (var shape in _shapes)
                 {
-                    if(shape.isTouch(_start))
+                    if (shape.isTouch(_start))
                     {
                         IShape newShape = (IShape)shape.Clone();
                         newShape.FillColor = System.Drawing.Color.FromArgb(_selectedColor.A, _selectedColor.R, _selectedColor.G, _selectedColor.B);
@@ -232,7 +232,7 @@ namespace paintting
                     actualCanvas.Children.Add(oldShape);
                 }
 
-                
+
 
                 if (!_isEraser) // khong xoa thi ve
                 {
@@ -245,7 +245,8 @@ namespace paintting
                     var newShapes = new ShapesList();
                     foreach (var shape in _shapes)
                     {
-                        if(shape.isTouch(_end)) {
+                        if (shape.isTouch(_end))
+                        {
                             _eraseStack.Push(shape);
                             _operations.Push(true);
                         }
@@ -275,7 +276,7 @@ namespace paintting
 
             _isDrawing = false;
             _isPressMouse = false;
-            _start = new Point(0.0,0.0);
+            _start = new Point(0.0, 0.0);
             _end = new Point(0.0, 0.0);
             foreach (var op in _operations) Debug.Write(op);
             Debug.WriteLine("");
@@ -337,7 +338,7 @@ namespace paintting
 
         private void Is_Eraser_Btn(object sender, RoutedEventArgs e)
         {
-            _isEraser = _isEraser == false? true: false;
+            _isEraser = _isEraser == false ? true : false;
             _isFillColor = false;
         }
 
@@ -349,7 +350,7 @@ namespace paintting
                 Width = 80,
                 Height = 2,
                 Stroke = Brushes.Black,
-                StrokeDashArray = { 1 , 0},
+                StrokeDashArray = { 1, 0 },
                 StrokeThickness = 2,
             };
         }
@@ -382,7 +383,7 @@ namespace paintting
 
         private void Is_Fill_Btn(object sender, RoutedEventArgs e)
         {
-            _isFillColor = _isFillColor == true? false: true;
+            _isFillColor = _isFillColor == true ? false : true;
             _isEraser = false;
         }
 
@@ -390,7 +391,7 @@ namespace paintting
         {
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
             {
-                Title = "Project Paint" + " (Saving: Ctrl-S)"; 
+                Title = "Project Paint" + " (Saving: Ctrl-S)";
                 SaveDrawing();
             }
         }
@@ -509,7 +510,8 @@ namespace paintting
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 bin.Serialize(stream, this);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
             }
         }
@@ -521,7 +523,8 @@ namespace paintting
                 var shapes = (ShapesList)bin.Deserialize(stream);
                 this.Clear();
                 this.AddRange(shapes);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
             }
         }

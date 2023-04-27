@@ -18,7 +18,7 @@
 
         <Fluent:Ribbon Name="ribbon" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage Header="File">
+                <Fluent:Backstage Header="File" x:Name="backStage">
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="Open file"
                         MouseDown="OpenFile_BackstageTabItem_MouseDown">
