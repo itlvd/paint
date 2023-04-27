@@ -55,6 +55,7 @@ namespace RectangleShape
                 Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Color.A, Color.R, Color.G, Color.B)),
                 StrokeThickness = Size,
                 StrokeDashArray = new DoubleCollection(_StrokeDashArray),
+
                 Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(FillColor.A, FillColor.R, FillColor.G, FillColor.B))
             };
 

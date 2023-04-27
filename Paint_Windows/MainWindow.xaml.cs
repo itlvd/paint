@@ -59,6 +59,7 @@ namespace paintting
         Stack<bool> _operations = new(); // ve = false, erase = true
         Stack<bool> _undoOperation = new();
 
+
         KeyBinding UndoKeyBinding = new KeyBinding(
             ApplicationCommands.Undo,
             Key.Z,
@@ -71,6 +72,7 @@ namespace paintting
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Binding undo, redo
+
             InputBindings.Add(UndoKeyBinding);
             InputBindings.Add(RedoKeyBinding);
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo,
@@ -95,6 +97,7 @@ namespace paintting
                },
                (sender, e) => {
                    e.CanExecute = _shapes.Count > 0 && !_isDrawing;
+
                }));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo,
                (sender, e) => {
@@ -116,6 +119,7 @@ namespace paintting
                        actualCanvas.Children.RemoveAt(actualCanvas.Children.Count - 1);
                        _operations.Push(op);
                    }
+
                },
                (sender, e) => {
                    e.CanExecute = _undoStack.Count > 0 && !_isDrawing;
@@ -174,6 +178,7 @@ namespace paintting
             _undoStack.Clear();
             _undoOperation.Clear();
 
+
             Title = "Project Paint";
 
             _start = new Point(0.0, 0.0);
@@ -194,6 +199,7 @@ namespace paintting
                         newShapes.Add(newShape);
                         actualCanvas.Children.Add(newShape.Draw());
                         _operations.Push(false);
+
                     }
                 }
                 _shapes.AddRange(newShapes);
@@ -249,6 +255,7 @@ namespace paintting
                         {
                             _eraseStack.Push(shape);
                             _operations.Push(true);
+
                         }
                         else
                         {
@@ -339,6 +346,7 @@ namespace paintting
         private void Is_Eraser_Btn(object sender, RoutedEventArgs e)
         {
             _isEraser = _isEraser == false ? true : false;
+
             _isFillColor = false;
         }
 
@@ -384,6 +392,7 @@ namespace paintting
         private void Is_Fill_Btn(object sender, RoutedEventArgs e)
         {
             _isFillColor = _isFillColor == true ? false : true;
+
             _isEraser = false;
         }
 
@@ -392,6 +401,7 @@ namespace paintting
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
             {
                 Title = "Project Paint" + " (Saving: Ctrl-S)";
+
                 SaveDrawing();
             }
         }
@@ -499,6 +509,7 @@ namespace paintting
                 transform.ScaleY -= 0.1;
             }
         }
+
     }
 
     [Serializable]
@@ -512,6 +523,7 @@ namespace paintting
                 bin.Serialize(stream, this);
             }
             catch (Exception ex)
+
             {
             }
         }
@@ -525,6 +537,7 @@ namespace paintting
                 this.AddRange(shapes);
             }
             catch (Exception ex)
+
             {
             }
         }
