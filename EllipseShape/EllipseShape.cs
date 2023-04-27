@@ -105,8 +105,8 @@ namespace EclipseShape
             double width = Math.Abs(end.X - start.X);
             double height = Math.Abs(end.Y - start.Y);
 
-            double a =  width / 2;
-            double b =  height / 2;
+            double a = width / 2;
+            double b = height / 2;
 
             double h = Math.Abs(end.X - a);
             double k = Math.Abs(end.Y - b);

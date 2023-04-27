@@ -17,7 +17,7 @@ namespace RectangleShape
         public string Name => "Rectangle";
         public string Icon => "./img/rectangular.png";
         public int Size { get; set; } = 2;
-        
+
         public Color Color { get; set; } = Color.Black;
         public string StrokeStyle { get; set; } = "1 0";
         public Color FillColor { get; set; } = Color.White;
@@ -45,7 +45,7 @@ namespace RectangleShape
         {
             double width = Math.Abs(End.X - Start.X);
             double height = Math.Abs(End.Y - Start.Y);
-            
+
             var _StrokeDashArray = Array.ConvertAll(StrokeStyle.Split(" "), Double.Parse);
 
             var shape = new Rectangle()
@@ -54,7 +54,8 @@ namespace RectangleShape
                 Height = height,
                 Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Color.A, Color.R, Color.G, Color.B)),
                 StrokeThickness = Size,
-                StrokeDashArray =  new DoubleCollection(_StrokeDashArray),
+                StrokeDashArray = new DoubleCollection(_StrokeDashArray),
+
                 Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(FillColor.A, FillColor.R, FillColor.G, FillColor.B))
             };
 

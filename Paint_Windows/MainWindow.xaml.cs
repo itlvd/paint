@@ -50,8 +50,15 @@ namespace paintting
         Point _start;
         Point _end;
 
+        // a serializable list of IShape
         ShapesList _shapes = new ShapesList();
-        Stack<IShape> _undoStack = new Stack<IShape>();
+
+        // undo, redo
+        Stack<IShape> _undoStack = new();
+        Stack<IShape> _eraseStack = new();
+        Stack<bool> _operations = new(); // ve = false, erase = true
+        Stack<bool> _undoOperation = new();
+
 
         KeyBinding UndoKeyBinding = new KeyBinding(
             ApplicationCommands.Undo,
@@ -61,40 +68,58 @@ namespace paintting
            ApplicationCommands.Redo,
            Key.Y,
            ModifierKeys.Control);
-        private bool _justErased = false;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Binding undo, redo
+
             InputBindings.Add(UndoKeyBinding);
             InputBindings.Add(RedoKeyBinding);
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo,
                (sender, e) => {
                    Title = "Project Paint" + " (Undo-ing: Ctrl-Z)";
-                   if (!_justErased)
+                   var op = _operations.Pop();
+                   if (!op)
                    {
                        var shape = _shapes[_shapes.Count - 1].Clone();
-                       _shapes.RemoveAt(_shapes.Count - 1); 
+                       _shapes.RemoveAt(_shapes.Count - 1);
                        _undoStack.Push((IShape)shape);
                        actualCanvas.Children.RemoveAt(actualCanvas.Children.Count - 1);
+                       _undoOperation.Push(op);
                    }
                    else
                    {
-                       var shape = _undoStack.Pop();
+                       var shape = _eraseStack.Pop();
                        _shapes.Add(shape);
                        actualCanvas.Children.Add(shape.Draw());
-                       _justErased = false;
+                       _undoOperation.Push(op);
                    }
                },
-               (sender, e) => { 
-                   e.CanExecute = _shapes.Count > 0 && !_isDrawing; 
+               (sender, e) => {
+                   e.CanExecute = _shapes.Count > 0 && !_isDrawing;
+
                }));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo,
                (sender, e) => {
                    Title = "Project Paint" + " (Redo-ing: Ctrl-Y)";
+                   var op = _undoOperation.Pop();
 
-                   var shape = _undoStack.Pop();
-                   _shapes.Add(shape);
-                   actualCanvas.Children.Add(shape.Draw());
+                   if (!op)
+                   {
+                       var shape = _undoStack.Pop();
+                       _shapes.Add(shape);
+                       actualCanvas.Children.Add(shape.Draw());
+                       _operations.Push(op);
+                   }
+                   else
+                   {
+                       var shape = _shapes[_shapes.Count - 1].Clone();
+                       _shapes.RemoveAt(_shapes.Count - 1);
+                       _eraseStack.Push((IShape)shape);
+                       actualCanvas.Children.RemoveAt(actualCanvas.Children.Count - 1);
+                       _operations.Push(op);
+                   }
+
                },
                (sender, e) => {
                    e.CanExecute = _undoStack.Count > 0 && !_isDrawing;
@@ -132,7 +157,7 @@ namespace paintting
                     Tag = ability.Value.Name,
                     Icon = ability.Value.Icon,
                 };
-                
+
                 button.Click += ability_Click;
                 abilitiesStackPanel.Children.Add(button);
             }
@@ -142,6 +167,8 @@ namespace paintting
         {
             var button = (System.Windows.Controls.Button)sender;
             string name = (string)button.Tag;
+            _isEraser = false;
+            _isFillColor = false;
             _selectedType = name;
         }
 
@@ -149,7 +176,8 @@ namespace paintting
         {
             _isDrawing = true;
             _undoStack.Clear();
-            _justErased = false;
+            _undoOperation.Clear();
+
 
             Title = "Project Paint";
 
@@ -164,12 +192,14 @@ namespace paintting
                 var newShapes = new ShapesList();
                 foreach (var shape in _shapes)
                 {
-                    if(shape.isTouch(_start))
+                    if (shape.isTouch(_start))
                     {
                         IShape newShape = (IShape)shape.Clone();
                         newShape.FillColor = System.Drawing.Color.FromArgb(_selectedColor.A, _selectedColor.R, _selectedColor.G, _selectedColor.B);
                         newShapes.Add(newShape);
                         actualCanvas.Children.Add(newShape.Draw());
+                        _operations.Push(false);
+
                     }
                 }
                 _shapes.AddRange(newShapes);
@@ -194,7 +224,7 @@ namespace paintting
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_isDrawing)
+            if (_isDrawing && !_isFillColor)
             {
                 _isPressMouse = true;
 
@@ -208,12 +238,11 @@ namespace paintting
                     actualCanvas.Children.Add(oldShape);
                 }
 
-                
+
 
                 if (!_isEraser) // khong xoa thi ve
                 {
                     _prototype.UpdateEnd(_end);
-
                     UIElement newShape = _prototype.Draw();
                     actualCanvas.Children.Add(newShape);
                 }
@@ -222,9 +251,11 @@ namespace paintting
                     var newShapes = new ShapesList();
                     foreach (var shape in _shapes)
                     {
-                        if(shape.isTouch(_end)) {
-                            _undoStack.Push(shape);
-                            _justErased = true;
+                        if (shape.isTouch(_end))
+                        {
+                            _eraseStack.Push(shape);
+                            _operations.Push(true);
+
                         }
                         else
                         {
@@ -246,13 +277,16 @@ namespace paintting
             if (!_isEraser && _isDrawing && _isPressMouse)
             {
                 _shapes.Add((IShape)_prototype.Clone());
+                _operations.Push(false);
             }
-            
+
 
             _isDrawing = false;
             _isPressMouse = false;
-            _start = new Point(0.0,0.0);
+            _start = new Point(0.0, 0.0);
             _end = new Point(0.0, 0.0);
+            foreach (var op in _operations) Debug.Write(op);
+            Debug.WriteLine("");
 
             //Title = "Up";
         }
@@ -311,7 +345,8 @@ namespace paintting
 
         private void Is_Eraser_Btn(object sender, RoutedEventArgs e)
         {
-            _isEraser = _isEraser == false? true: false;
+            _isEraser = _isEraser == false ? true : false;
+
             _isFillColor = false;
         }
 
@@ -323,7 +358,7 @@ namespace paintting
                 Width = 80,
                 Height = 2,
                 Stroke = Brushes.Black,
-                StrokeDashArray = { 1 , 0},
+                StrokeDashArray = { 1, 0 },
                 StrokeThickness = 2,
             };
         }
@@ -356,7 +391,8 @@ namespace paintting
 
         private void Is_Fill_Btn(object sender, RoutedEventArgs e)
         {
-            _isFillColor = _isFillColor == true? false: true;
+            _isFillColor = _isFillColor == true ? false : true;
+
             _isEraser = false;
         }
 
@@ -364,7 +400,8 @@ namespace paintting
         {
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
             {
-                Title = "Project Paint" + " (Saving: Ctrl-S)"; 
+                Title = "Project Paint" + " (Saving: Ctrl-S)";
+
                 SaveDrawing();
             }
         }
@@ -454,6 +491,25 @@ namespace paintting
             _isEraser = false;
             _isFillColor = false;
         }
+
+        private void aboveCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            //var mouse = Mouse.GetPosition(actualCanvas);
+            //actualCanvas.RenderTransformOrigin = new Point(mouse.X / actualCanvas.ActualWidth, mouse.Y / actualCanvas.ActualHeight);
+            //transform.CenterX = mouse.X;
+            //transform.CenterY = mouse.Y;
+            if (e.Delta > 0)
+            {
+                transform.ScaleX += 0.1;
+                transform.ScaleY += 0.1;
+            }
+            else if (e.Delta < 0)
+            {
+                transform.ScaleX -= 0.1;
+                transform.ScaleY -= 0.1;
+            }
+        }
+
     }
 
     [Serializable]
@@ -465,7 +521,9 @@ namespace paintting
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 bin.Serialize(stream, this);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
+
             {
             }
         }
@@ -477,7 +535,9 @@ namespace paintting
                 var shapes = (ShapesList)bin.Deserialize(stream);
                 this.Clear();
                 this.AddRange(shapes);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
+
             {
             }
         }

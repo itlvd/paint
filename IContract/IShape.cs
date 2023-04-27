@@ -8,7 +8,7 @@ namespace IContract
     public interface IShape : ICloneable
     {
         string Name { get; }
-        string Icon {  get; }
+        string Icon { get; }
         int Size { get; set; }
         System.Drawing.Color Color { get; set; }
         System.Drawing.Color FillColor { get; set; }
