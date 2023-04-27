@@ -6,8 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:paintting"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-
+        Title="Project Paint" Height="450" Width="800" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+    
 
     <Grid>
 
@@ -30,13 +30,13 @@
 
 
             <Fluent:RibbonTabItem Header="Main">
-                <Fluent:RibbonGroupBox Header="Import Data">
-                    <Fluent:Button Header="Paint File">
+                <Fluent:RibbonGroupBox Header="Save Data">
+                    <Fluent:Button Header="Paint File" Click="SavePaintFile">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/folder.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Image">
+                    <Fluent:Button Header="Image" Click="SaveFile">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/image.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
@@ -44,7 +44,7 @@
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Tool">
-                    <Fluent:Button Header="Pen">
+                    <Fluent:Button Header="Pen" Click="Is_Pen_Btn">
                         <Fluent:Button.LargeIcon>
                             <Image Source="./img/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
@@ -54,7 +54,6 @@
                             <Image Source="./img/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:ToggleButton.LargeIcon>
                     </Fluent:ToggleButton>
-                    
                     
                     
                     <Fluent:ToggleButton Header="Fill" Click="Is_Fill_Btn">
@@ -216,6 +215,7 @@
 
         </Fluent:Ribbon>
 
+
         <ScrollViewer DockPanel.Dock="Bottom" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
             <Canvas Background="Transparent" Name="actualCanvas" Width="800" Height="313">
                 <Canvas.LayoutTransform>
@@ -224,7 +224,15 @@
             </Canvas>
         </ScrollViewer >
         <Canvas DockPanel.Dock="Bottom" Grid.Row="1" Margin="0 0 20 20" Background="Transparent"  Name="aboveCanvas" MouseWheel="aboveCanvas_MouseWheel" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
+
+        <Border DockPanel.Dock="Bottom" Grid.Row="1" >
+            <Canvas Background="Transparent" Name="actualCanvas">
+            </Canvas>
+        </Border >
+        <Canvas DockPanel.Dock="Bottom" Grid.Row="1" Background="Transparent"  Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
+
         </Canvas>
+
     </Grid>
 
 
