@@ -347,7 +347,17 @@ namespace paintting
         {
             _isEraser = _isEraser == false ? true : false;
 
+            if(_isEraser == true)
+            {
+                eraserBtn.IsEnabled = true;
+            }
+            else
+            {
+                eraserBtn.IsChecked = false;
+            }
+
             _isFillColor = false;
+            fillBtn.IsChecked = false;
         }
 
         private void Stroke_Style_1_Clicked(object sender, RoutedEventArgs e)
@@ -392,7 +402,13 @@ namespace paintting
         private void Is_Fill_Btn(object sender, RoutedEventArgs e)
         {
             _isFillColor = _isFillColor == true ? false : true;
+            if(_isFillColor == false)
+            {
+                fillBtn.IsChecked = false;
+            }
+            else { fillBtn.IsChecked = true; }
 
+            eraserBtn.IsChecked = false;
             _isEraser = false;
         }
 
@@ -490,6 +506,9 @@ namespace paintting
         {
             _isEraser = false;
             _isFillColor = false;
+
+            eraserBtn.IsChecked = false;
+            fillBtn.IsChecked = false;
         }
 
         private void aboveCanvas_MouseWheel(object sender, MouseWheelEventArgs e)

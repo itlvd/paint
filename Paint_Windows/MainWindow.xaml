@@ -49,14 +49,14 @@
                             <Image Source="./img/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:ToggleButton Header="Eraser" Click="Is_Eraser_Btn">
+                    <Fluent:ToggleButton Header="Eraser" Click="Is_Eraser_Btn" IsChecked="False" x:Name="eraserBtn" >
                         <Fluent:ToggleButton.LargeIcon>
                             <Image Source="./img/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:ToggleButton.LargeIcon>
                     </Fluent:ToggleButton>
                     
                     
-                    <Fluent:ToggleButton Header="Fill" Click="Is_Fill_Btn">
+                    <Fluent:ToggleButton Header="Fill" Click="Is_Fill_Btn" IsChecked="False" x:Name="fillBtn">
                         <Fluent:ToggleButton.LargeIcon>
                             <Image Source="./img/fill.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:ToggleButton.LargeIcon>
